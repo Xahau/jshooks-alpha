@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+
+self() {
+  DIR=$( cd "$( dirname "$0" )/" && pwd)
+  echo $DIR
+}
+
+eval $(./scripts/colors | sed 's/\(.*\)=\(.*\)/export \1="\2"/g')
+
+clear
+
+echo
+./scripts/banner
+echo
+
+echo -e "  ${BLUE}Compiling TypeScript files to Javascript...${END}"
+tsfiles=$(ls $(self)/contracts/*.ts|rev|cut -d '.' -f 2-100|rev|xargs -I___ echo "      > ${PURPLE}___.ts${END}\n      < ${GREEN}___-tsc.js${END}")
+numtsfiles=$(echo "$tsfiles"|wc -l|xargs)
+echo -e "   - Found       ${GREEN}${numtsfiles}${END}      .ts file(s)"
+
+if [[ "$numtsfiles" -gt 0 ]]; then
+  ls $(self)/contracts/*.ts|rev|cut -d '.' -f 2-100|rev|xargs -I___ echo "tsc ___.ts --outFile ___-tsc.js"|bash
+  echo -e "$tsfiles"
+fi
+
+echo
+
+# docker exec jshooks-build /quickjslite/qjsc /contracts/bla-tsc.js
+
+echo -e "  ${BLUE}Compiling JS files to binary Hook files ${GREEN}(.bc)${BLUE}...${END}"
+jsfiles=$(ls $(self)/contracts/*.js|rev|cut -d '.' -f 2-100|cut -d '/' -f 1|rev|xargs -I___ echo "      > ${PURPLE}$(self)/contracts/___.js${END}\n${GREEN}$(self|sed 's/./ /g') ^^          build/___.bc${END}")
+numjsfiles=$(echo "$jsfiles"|wc -l|xargs)
+echo -e "   - Found       ${GREEN}${numjsfiles}${END}      .js file(s)"
+if [[ "$numjsfiles" -gt 0 ]]; then
+  echo -e "$jsfiles"
+  ls $(self)/contracts/*.js|rev|cut -d '.' -f 2-100|cut -d '/' -f 1|rev|xargs -I___ echo "docker exec jshooks-build sh -c '/quickjslite/qjsc /contracts/___.js > /build/___.bc'"|bash
+fi
+
+# # Get the input file name from the command line argument
+# input_file="$1"
+# # Strip the .js extension and replace it with .bc
+# output_file="${input_file%.js}.bc"
+# # Generate the hex output and convert it to bytes
+# hex_output=$(./quickjslite/qjsc -c -o /dev/stdout "$input_file" | tr -d '\n' | grep -Eo '\{[^}]+\}' | grep -Eo '0x[a-fA-F0-9]+' | sed -e 's/0x//g' | tr -d '\n')
+# # Convert the hex to bytes and write it to the output file
+# echo "$hex_output" | xxd -r -p > "$output_file"
+# echo "Output written to: $output_file"
+
+
+echo

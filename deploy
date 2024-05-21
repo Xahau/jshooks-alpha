@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+
+self() {
+  DIR=$( cd "$( dirname "$0" )/" && pwd)
+  echo $DIR
+}
+
+eval $(./scripts/colors | sed 's/\(.*\)=\(.*\)/export \1="\2"/g')
+
+HOOK=$(echo "$1"|sed 's/\.[tjsmbc]\{2,3\}$//g'|rev|cut -d '/' -f 1|rev)
+ACCOUNT=${2:-ryouhapPYV5KNHmFUKrjNqsjxhnxvQiVt}
+
+clear
+
+if [[ "$HOOK" == "" ]]; then
+  echo
+  echo -e "${RED}Params missing, needs contract name as arg.,${END} e.g.:"
+  echo -e "     ./deploy ${PURPLE}mycontract${END} [destination-raddr]"
+  echo
+  exit 1
+fi
+
+if [[ -f "$(self)/build/$HOOK.bc" ]]; then
+echo
+  echo -e "Deploying '${PURPLE}${HOOK}'${GREEN} to account '${PURPLE}${ACCOUNT}${END}'..."
+  echo
+
+  HOOK=$HOOK \
+  ACCOUNT=$ACCOUNT \
+  HOOKON=${HOOKON:-0000fffffffffffffffffffffffffffffffffff7000000000000000000400000} \
+  FLAGS=${FLAGS:-1} \
+  NAMESPACE=${NAMESPACE:-0000000000000000000000000000000000000000000000000000000000000000} \
+  node $(self)/scripts/deploy.mjs
+  
+  echo -e "Advancing ledger (calling ${BLUE}./advance${END} for you)..."
+  ./advance
+  echo
+else
+  echo -e "${RED}Contract '${HOOK}' not found (looking for: ${CYAN}build/$HOOK.bc${RED})"
+  echo
+  exit 1
+fi
+
+echo

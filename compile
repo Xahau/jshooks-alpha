@@ -28,23 +28,29 @@ echo
 # docker exec jshooks-build /quickjslite/qjsc /contracts/bla-tsc.js
 
 echo -e "  ${BLUE}Compiling JS files to binary Hook files ${GREEN}(.bc)${BLUE}...${END}"
-jsfiles=$(ls $(self)/contracts/*.js|rev|cut -d '.' -f 2-100|cut -d '/' -f 1|rev|xargs -I___ echo "      > ${PURPLE}$(self)/contracts/___.js${END}\n${GREEN}$(self|sed 's/./ /g') ^^          build/___.bc${END}")
+jsfiles=$(ls $(self)/contracts/*.js|rev|cut -d '.' -f 2-100|cut -d '/' -f 1|rev|xargs -I___ echo "      > ${PURPLE}$(self)/contracts/___.js${END}")
 numjsfiles=$(echo "$jsfiles"|wc -l|xargs)
 echo -e "   - Found       ${GREEN}${numjsfiles}${END}      .js file(s)"
 if [[ "$numjsfiles" -gt 0 ]]; then
   echo -e "$jsfiles"
-  ls $(self)/contracts/*.js|rev|cut -d '.' -f 2-100|cut -d '/' -f 1|rev|xargs -I___ echo "docker exec jshooks-build sh -c '/quickjslite/qjsc /contracts/___.js > /build/___.bc'"|bash
+  rm -f $(self)/build/*.bc
+  rm -f $(self)/build/*.bc.raw
+  echo -e "   - Compiled:${GREEN}"
+  ls $(self)/contracts/*.js|rev|cut -d '.' -f 2-100|cut -d '/' -f 1|rev|xargs -I___ echo "docker exec jshooks-build sh /qjsc-compile.sh ___.js"|bash
+  echo -e "${END}"
 fi
 
-# # Get the input file name from the command line argument
-# input_file="$1"
-# # Strip the .js extension and replace it with .bc
-# output_file="${input_file%.js}.bc"
-# # Generate the hex output and convert it to bytes
-# hex_output=$(./quickjslite/qjsc -c -o /dev/stdout "$input_file" | tr -d '\n' | grep -Eo '\{[^}]+\}' | grep -Eo '0x[a-fA-F0-9]+' | sed -e 's/0x//g' | tr -d '\n')
-# # Convert the hex to bytes and write it to the output file
-# echo "$hex_output" | xxd -r -p > "$output_file"
-# echo "Output written to: $output_file"
-
+echo "  You can now deploy by issuing:"
+echo "     ./deploy {contract} {account}"
+echo
+echo "  For example:"
+echo -e "     ./deploy ${BLUE}somecontract${END} ${PURPLE}ryouhapPYV5KNHmFUKrjNqsjxhnxvQiVt${END}"
+echo
+echo -e "  By default, a Hook will be deployed with namespace ${RED}0000..0000${END} (64x), flag ${RED}1${END}"
+echo -e "  and hookon ${RED}0000ffff..ffff7000000000000000000400000${END} (all transactions)."
+echo -e "  If you want to change these settings, deploy with environment variables:"
+echo -e "      ${CYAN}HOOKON=...${END}"
+echo -e "      ${CYAN}FLAGS=...${END}"
+echo -e "      ${CYAN}NAMESPACE=...${END}"
 
 echo

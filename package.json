@@ -21,7 +21,9 @@
   },
   "homepage": "https://github.com/Xahau/jshooks-alpha#readme",
   "devDependencies": {
-    "typescript": "^5.4.5"
+    "node-fetch": "^3.3.2",
+    "typescript": "^5.4.5",
+    "xrpl-accountlib": "^3.6.1"
   },
   "types": "@types/*.ts"
 }

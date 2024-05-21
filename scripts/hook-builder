@@ -8,7 +8,7 @@ self() {
 echo -e "${CYAN}Cloning/updating repo...${END}"
 git clone https://github.com/RichardAH/quickjslite.git $(self)/../repos/quickjslite 2>&1 |grep -v 'already exists'
 
-update=$(cd $(self)/../repos/quickjslite && git pull)
+update=$(cd $(self)/../repos/quickjslite && git reset --hard && git pull && cat quickjs.c|grep -v -e '^#define DUMP_' > quickjs.c.new && mv quickjs.c.new quickjs.c)
 noupdate=$(echo "$update"|grep Already |wc -l)
 
 running=0
@@ -29,6 +29,7 @@ else
         --name jshooks-build  \
         -v $(self)/../contracts:/contracts \
         -v $(self)/../build:/build \
+        -v $(self)/../scripts/qjsc-compile.sh:/qjsc-compile.sh \
         -v $(self)/../repos/quickjslite:/quickjslite \
         alpine \
         sh -c 'apk add g++ make build-base git && cd /quickjslite && make 2>&1 && echo "DONE BUILDING"; tail -f /dev/null'

@@ -17,3 +17,7 @@ rm -rf $(self)/repos/quickjslite
 echo "Removing explorer container"
 docker rm -f jshooks-explorer
 rm -rf $(self)/repos/explorer
+
+echo "Removing compiled hooks"
+rm -rf $(self)/build/*.bc
+

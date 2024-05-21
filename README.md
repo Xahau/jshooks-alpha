@@ -14,7 +14,6 @@
 ## Todo:
 
 - [ ] Build scripts for JS
-- [ ] Log watcher scripts (xahaud)
 - [ ] Deploy scripts for JS Hook(s)
 - [ ] Sample scripts (xrpl-accountlib)
 
@@ -38,7 +37,8 @@ To install (or update, or reload, or restart, or ...)
 
 ##  Use
 
-- **Close a ledger, commit transactions, get logging:**: `./advance`
+- **Watch Xahaud trace logs live, filtered @ Hook data:**: `./logs`
+- **Close a ledger, commit transactions, generate logging (`./logs`):**: `./advance`
 
 
 # Endpoints

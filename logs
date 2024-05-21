@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+eval $(./scripts/colors | sed 's/\(.*\)=\(.*\)/\1="\2"/g')
+
+running=$(docker inspect jshooks-xahaud 2>&1|grep Hostname|wc -l|xargs)
+
+if [[ "$running" -gt 0 ]]; then
+  clear
+  echo
+  echo -e "${GREEN}Starting live log monitor, edit with ${PURPLE}CTRL + C${END}"
+  echo
+  docker logs --tail 20 -f jshooks-xahaud 2>&1 | grep -E --color=always 'HookTrace|HookError|Publishing ledger [0-9]+'
+else
+  echo
+  echo -e "${RED}Cannot watch live logs, container not running. Run ${PURPLE}./install${RED} script${END}"
+  echo
+fi

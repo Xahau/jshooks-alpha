@@ -9,6 +9,9 @@
   /_/\_\__,_|_| |_|\__,_|\__,_|   #    ▀▀▀• ▀▀▀▀     ▀▀▀ · ▀█▄▀▪ ▀█▄▀▪·▀  ▀ ▀▀▀▀
 ```
 
+<img width="700" alt="image" src="https://github.com/Xahau/jshooks-alpha/assets/4756161/a5ade08d-ee46-43da-8474-3df330356a1b">
+
+
 ## Commands:
 
 ### Magic:

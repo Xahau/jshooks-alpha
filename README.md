@@ -13,9 +13,7 @@
 
 ## Todo:
 
-- [ ] Build scripts for JS
-- [ ] Deploy scripts for JS Hook(s)
-- [ ] Sample scripts (xrpl-accountlib)
+https://github.com/Xahau/jshooks-alpha/issues?q=is%3Aopen+is%3Aissue+label%3Atodo
 
 # Commands:
 

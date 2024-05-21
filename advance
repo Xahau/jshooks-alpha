@@ -5,6 +5,7 @@ running=$(docker inspect jshooks-xahaud 2>&1|grep Hostname|wc -l|xargs)
 if [[ "$running" -gt 0 ]]; then
   docker start jshooks-xahaud > /dev/null 2>&1
   docker exec jshooks-xahaud sh -c '/xahaud -q --conf /xahaud.conf ledger_accept' | jq
+  # Alternatively: curl -X POST --data '{"method":"ledger_accept"}' localhost:9005
 else
   echo "Cannot close ledger, container not running. Run ./install script"
 fi

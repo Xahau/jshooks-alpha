@@ -48,10 +48,25 @@ Tip: just keep this running in a separate terminal
 ./advance
 ```
 Tip: If you want to automate this, you can POST:  
-  ```
-    curl \
-      -X POST --data '{"method":"ledger_accept"}' \
-      localhost:9005
+```
+  curl \
+    -X POST --data '{"method":"ledger_accept"}' \
+    localhost:9005
+```
+
+### Compile (build) JS Hooks to `.bc` Hook (binary, to be deployed)
+This command will compile `.js/.mjs/.cjs/.ts` contracts to compiled binary SetHook Hook ready hook code. The output will be stored in the `./build` folder.
+
+If your file has the `.ts` extension (TypeScript), it will be compiled from TypeScript to Javascript first, and then compiled to binary SetHook ready code. Your `.js` file will then have the name of your `.ts` file, with `-tsc` appended (to prevent overwriting existing `.js`. files). E.g. `sample.ts` becomes `sample-tsc.js`.
+
+To compile all `.js/.mjs/.cjs/.ts` files in the `./contracts` folder:
+```
+./compile
+```
+
+To compile a single `.js/.mjs/.cjs/.ts` file in the `./contracts` folder:
+```
+./compile mycontract.ts
 ```
 
 # Endpoints

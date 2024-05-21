@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-eval $(./scripts/colors | sed 's/\(.*\)=\(.*\)/\1="\2"/g')
+eval $(./scripts/colors | sed 's/\(.*\)=\(.*\)/export \1="\2"/g')
 
 clear
 

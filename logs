@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-eval $(./scripts/colors | sed 's/\(.*\)=\(.*\)/\1="\2"/g')
+eval $(./scripts/colors | sed 's/\(.*\)=\(.*\)/export \1="\2"/g')
 
 running=$(docker inspect jshooks-xahaud 2>&1|grep Hostname|wc -l|xargs)
 

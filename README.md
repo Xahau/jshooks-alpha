@@ -51,5 +51,5 @@ To install (or update, or reload, or restart, or ...)
 #### Watch install script in dev (autoreload) mode:
 
 ```
-nodemon -w ./ --ext '*' --ignore ./conf --ignore ./bin --ignore ./repos --exec bash install
+./run-dev
 ```

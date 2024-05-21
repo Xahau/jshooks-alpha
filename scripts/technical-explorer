@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+
+self() {
+  DIR=$( cd "$( dirname "$0" )/" && pwd)
+  echo $DIR
+}
+
+RED="\033[31m"
+GREEN="\033[32m"
+BLUE="\033[34m"
+PURPLE="\033[35m"
+CYAN="\033[36m"
+END="\033[0m"
+
+# echo -e "${RED}Removing existing container${END}"
+# docker rm -f jshooks-explorer > /dev/null 2>&1
+
+running=$(docker inspect jshooks-explorer 2>&1|grep Hostname|wc -l|xargs)
+
+if [[ "$running" -gt 0 ]]; then
+    echo -e "${CYAN}Updating repo...${END}"
+    (cd $(self)/../repos/explorer && git pull|grep -v 'Already')
+
+    docker start jshooks-explorer > /dev/null
+    echo
+    echo -e "${CYAN}Explorer running / starting container${END}"
+    echo -e "Listening at: ${PURPLE}http://localhost:9007/ws:localhost:9006${END}"
+else
+    echo -e "${CYAN}Cloning repo...${END}"
+    git clone https://github.com/XRPLF/XRPL-Technical-Explorer.git $(self)/../repos/explorer 2>&1 |grep -v 'already exists'
+
+    # $(/sbin/ip route|grep default|cut -d " " -f 3)
+    echo -e "${CYAN}Building docker container...${END}"
+    docker run -d --rm --name jshooks-explorer \
+        -v $(self)/../repos/explorer:/explorer \
+        -p 9007:9007 \
+        node:16-alpine \
+        sh -c 'apk add g++ make py3-pip build-base python3 |grep -iE "build|OK|installing" && cd /explorer && npm install 2>&1 |grep -iE "build|OK|installing" && export VUE_APP_WSS_ENDPOINT=ws://localhost:9006 && echo "Websocket endpoint:"; echo $VUE_APP_WSS_ENDPOINT; npm run build 2>&1 |grep -iE "build|OK|installing" && npm install -g serve && nohup serve -s -p 9007 dist'
+
+    echo -e "${PURPLE}Subscribing to logs${END}"
+    docker logs -f jshooks-explorer | while read line; do
+        echo "$line"
+        if echo "$line" | grep -q "Accepting connections"; then
+            pkill -9 -f "docker logs -f jshooks-explorer"
+            break
+        fi
+    done
+
+    echo
+    echo -e "${END}Explorer running at: ${PURPLE}http://localhost:9007/ws:localhost:9006${END}"
+fi

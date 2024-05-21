@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+
+RED="\033[31m"
+GREEN="\033[32m"
+BLUE="\033[34m"
+PURPLE="\033[35m"
+CYAN="\033[36m"
+END="\033[0m"
+
+clear
+
+echo
+echo '             _                    #    ▐▄▄▄.▄▄ ·      ▄ .▄            ▄ •▄ .▄▄ ·                '
+echo '  __  ____ _| |__   __ _ _   _    #     ·██▐█ ▀.     ██▪▐█▪     ▪     █▌▄▌▪▐█ ▀.                '
+echo '  \ \/ / _` | "_ \ / _` | | | |   #   ▪▄ ██▄▀▀▀█▄    ██▀▐█ ▄█▀▄  ▄█▀▄ ▐▀▀▄·▄▀▀▀█▄               '
+echo "   >  < (_| | | | | (_| | |_| |   #   ▐▌▐█▌▐█▄▪▐█    ██▌▐▀▐█▌.▐▌▐█▌.▐▌▐█.█▌▐█▄▪▐█               "
+echo "  /_/\_\__,_|_| |_|\__,_|\__,_|   #    ▀▀▀• ▀▀▀▀     ▀▀▀ · ▀█▄▀▪ ▀█▄▀▪·▀  ▀ ▀▀▀▀                "
+echo
+                     
+echo -e "${GREEN}Xahau(d) - JS Hooks ALPHA TOOLKIT${END}"
+echo -e "                     ^^ EARLY STAGE! Expect dragons! 🐉 🐉"
+echo
+echo -e "${BLUE}Installs & runs:${END}"
+echo "    - Local JS Hooks enabled Xahau instance"
+echo "        - Network ID 65535 to disable TX signature verification"
+echo "    - Technical Explorer"
+echo "    - Log Watcher (rippled in trace, filtering on Hook info)"
+echo "    - JS Hooks compiler (JS to Hook) & deployment"
+echo "    - Transaction Generation Helper script"
+
+echo
+echo -e "${BLUE}Checking dependencies:${END}"
+
+./scripts/install-check-prerequisites ; [[ $? -gt 0 ]] && echo -e "${RED}Dependency ERROR${END}" && exit 1 || echo -e "${GREEN}Dependencies OK${END}"
+
+echo
+echo -e "${BLUE}Building/running Docker Image:${END}"
+
+echo
+echo -e "${PURPLE}XAHAUD${END}"
+./scripts/xahaud
+
+echo
+echo -e "${PURPLE}JS HOOK BUILDER${END}"
+./scripts/hook-builder
+
+echo
+echo -e "${PURPLE}TECHNICAL EXPLORER${END}"
+./scripts/technical-explorer
+
+
+##### Done
+
+echo

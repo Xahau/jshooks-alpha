@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+self() {
+  DIR=$( cd "$( dirname "$0" )/" && pwd)
+  echo $DIR
+}
+
+nodemon -w $(self) --ext '*' --ignore $(self)/conf --ignore $(self)/bin --ignore $(self)/repos --exec bash install

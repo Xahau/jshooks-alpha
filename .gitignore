@@ -1,0 +1,4 @@
+.DS_Store
+/repos/**
+/bin/**
+/conf/xahaud.conf

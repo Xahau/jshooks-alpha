@@ -1,0 +1,75 @@
+#!/usr/bin/env bash
+
+self() {
+  DIR=$( cd "$( dirname "$0" )/" && pwd)
+  echo $DIR
+}
+
+RED="\033[31m"
+GREEN="\033[32m"
+BLUE="\033[34m"
+PURPLE="\033[35m"
+CYAN="\033[36m"
+END="\033[0m"
+
+echo -e "${CYAN}Patching config files"
+echo "Mainnet enabled features:"
+
+rm -f $(self)/../conf/xahaud.conf
+cat $(self)/../conf/xahaud.template.conf > $(self)/../conf/xahaud.conf
+
+FEATURES=$(curl --silent https://xahau.network/feature | jq '.result.features[] | select(.enabled == true) .name'|cut -d '"' -f 2)
+echo -ne "${GREEN}"
+echo "$FEATURES" | wc -l
+echo >> $(self)/../conf/xahaud.conf
+echo "[features]" >> $(self)/../conf/xahaud.conf
+echo "$FEATURES" | grep -vE 'fixNSDelete|ZeroB2M' >> $(self)/../conf/xahaud.conf
+echo >> $(self)/../conf/xahaud.conf
+
+echo
+echo "Removing existing container"
+docker rm -f jshooks-xahaud > /dev/null 2>&1
+
+RELEASE_TYPE="jshooks"
+URL="https://build.xahau.tech/"
+PROGRAM=xahaud
+
+echo -e "${END}Fetching versions of $PROGRAM..."
+filenames=$(curl --silent "${URL}" | grep -Eo '>[^<]+<' | sed -e 's/^>//' -e 's/<$//' | grep -E '^\S+\+[0-9a-z]{2,}$' | grep -E $RELEASE_TYPE|sort -Vr)
+latestversion=$(echo "$filenames"|head -n 1)
+echo -e "${GREEN}Found latest version: ${BLUE}$latestversion, downloading..."
+curl --silent -o $(self)"/../bin/$latestversion" "${URL}/${latestversion}"
+echo -e ${CYAN}
+
+echo -e "${END}Creating container${CYAN}"
+docker run --rm -d --name jshooks-xahaud \
+    --platform linux/x86_64 \
+    -v $(self)/../conf/xahaud.conf:/xahaud.conf \
+    -v $(self)/../bin/$latestversion:/xahaud \
+    -p 9005:15005 \
+    -p 9006:16005 \
+    ubuntu:22.04 sh -c 'chmod +x /xahaud && /xahaud --conf /xahaud.conf --standalone --start 2>&1'
+
+echo -e "${END}Starting binary..."
+
+echo -e "${PURPLE}Subscribing to logs${END}"
+docker logs -f jshooks-xahaud | while read line; do
+    echo "$line" | egrep -i 'engine started|Starting new Ledger|ledger_current_index'
+    if echo "$line" | grep -q "ledger_current_index"; then
+        pkill -9 -f "docker logs -f jshooks-xahaud"
+        break
+    fi
+done
+
+echo "Getting server_info..."
+info=$(curl --silent -X POST --data '{"method":"server_info"}' localhost:9005)
+echo -ne "${END}Build version: "
+echo -en "${GREEN}";echo -n "$info" | jq '.result.info.build_version' |cut -d '"' -f 2
+echo -ne "${END}Ledgers:       "
+echo -en "${GREEN}";echo -n "$info" | jq '.result.info.complete_ledgers' |cut -d '"' -f 2
+echo -ne "${END}Network ID:    "
+echo -en "${GREEN}";echo -n "$info" | jq '.result.info.network_id' | xargs
+echo -ne "${END}RPC URL:       "
+echo -e  "${GREEN}http://localhost:9005"
+echo -ne "${END}Websocket URL: "
+echo -e  "${GREEN}http://localhost:9006"

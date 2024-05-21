@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+self() {
+  DIR=$( cd "$( dirname "$0" )/" && pwd)
+  echo $DIR
+}
+
+echo "Removing xahaud container"
+docker rm -f jshooks-xahaud
+rm -rf $(self)/conf/xahaud.conf
+rm -rf $(self)/bin/*
+
+echo "Removing JS Hook build container"
+docker rm -f jshooks-build
+rm -rf $(self)/repos/quickjslite
+
+echo "Removing explorer container"
+docker rm -f jshooks-explorer
+rm -rf $(self)/repos/explorer

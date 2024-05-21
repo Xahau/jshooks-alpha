@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+
+self() {
+  DIR=$( cd "$( dirname "$0" )/" && pwd)
+  echo $DIR
+}
+
+RED="\033[31m"
+GREEN="\033[32m"
+BLUE="\033[34m"
+PURPLE="\033[35m"
+CYAN="\033[36m"
+END="\033[0m"
+
+echo -e "${CYAN}Cloning/updating repo...${END}"
+git clone https://github.com/RichardAH/quickjslite.git $(self)/../repos/quickjslite 2>&1 |grep -v 'already exists'
+
+update=$(cd $(self)/../repos/quickjslite && git pull)
+noupdate=$(echo "$update"|grep Already |wc -l)
+
+running=0
+if [[ "$noupdate" -gt 0 ]]; then
+    running=$(docker inspect jshooks-build 2>&1|grep Hostname|wc -l|xargs)
+else
+    echo -e "${RED}Source code update, clean build cache & rebuild..."
+    rm -rf $(self)/../repos/quickjslite/.obj
+fi
+
+if [[ "$running" -gt 0 ]]; then
+    echo -e "${GREEN}Container jshooks-build present${END}"
+    docker start jshooks-build > /dev/null
+else
+    docker rm -f jshooks-build > /dev/null
+    echo -e "${BLUE}Building jshooks-build container${END}"
+    docker run -d --rm \
+        --name jshooks-build  \
+        -v $(self)/../contracts:/contracts \
+        -v $(self)/../repos/quickjslite:/quickjslite \
+        alpine \
+        sh -c 'apk add g++ make build-base git && cd /quickjslite && make 2>&1 && echo "DONE BUILDING"; tail -f /dev/null'
+
+    echo -e "${PURPLE}Subscribing to logs${END}"
+    docker logs -f jshooks-build | while read line; do
+        echo "$line" |egrep -i 'installing|function|done'
+        if echo "$line" | grep -q "DONE BUILDING"; then
+            pkill -9 -f "docker logs -f jshooks-build"
+            break
+        fi
+    done
+fi

@@ -6,3 +6,5 @@
 /contracts/**.js
 /contracts/**.ts
 /build/**.bc
+/build/**.bc.raw
+

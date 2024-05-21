@@ -18,9 +18,11 @@
 - [ ] Deploy scripts for JS Hook(s)
 - [ ] Sample scripts (xrpl-accountlib)
 
-## Commands:
+# Commands:
 
-#### Magic:
+## Setup
+
+#### Install / renew environment:
 
 To install (or update, or reload, or restart, or ...)
 
@@ -34,13 +36,12 @@ To install (or update, or reload, or restart, or ...)
 ./clean
 ```
 
-#### Close ledger (advance):
+##  Use
 
-```
-./advance
-```
+- **Close a ledger, commit transactions, get logging:**: `./advance`
 
-## Endpoints
+
+# Endpoints
 
 - **JSON RPC**: [http://localhost:9005](http://localhost:9005)
 - **WebSocket**: [http://localhost:9006](http://localhost:9006)

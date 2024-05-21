@@ -8,6 +8,9 @@ which_git=$(which git)
 which_docker=$(which docker)
 [[ "$which_docker" = "" ]] && echo -e "❌ docker not installed" && errors=1 || echo "✅ docker installed"
 
+has_node_npm=$(which npm 2>&1|grep / |wc -l)
+[[ "$has_node_npm" -lt 1 ]] && echo -e "❌ node/npm not installed" && errors=1 || echo "✅ node/npm installed"
+
 which_jq=$(which docker)
 [[ "$which_jq" = "" ]] && echo -e "❌ jq installed" && errors=1 || echo "✅ jq installed"
 

@@ -57,16 +57,35 @@ Tip: If you want to automate this, you can POST:
 ### Compile (build) JS Hooks to `.bc` Hook (binary, to be deployed)
 This command will compile `.js/.mjs/.cjs/.ts` contracts to compiled binary SetHook Hook ready hook code. The output will be stored in the `./build` folder.
 
-If your file has the `.ts` extension (TypeScript), it will be compiled from TypeScript to Javascript first, and then compiled to binary SetHook ready code. Your `.js` file will then have the name of your `.ts` file, with `-tsc` appended (to prevent overwriting existing `.js`. files). E.g. `sample.ts` becomes `sample-tsc.js`.
+If your file has the `.ts` extension (TypeScript), it will be compiled from TypeScript to Javascript first, and then compiled to binary SetHook ready code. Your `.js` file will then have the name of your `.ts` file. If an existing `.js` file with the same name exists **IT WILL BE OVERWRITTEN!**
 
 To compile all `.js/.mjs/.cjs/.ts` files in the `./contracts` folder:
+
 ```
 ./compile
 ```
 
 To compile a single `.js/.mjs/.cjs/.ts` file in the `./contracts` folder:
+
 ```
 ./compile mycontract.ts
+```
+
+### Deploy (compiled) JS Hooks to the ledger
+
+Deploy a contract from the `./build` folder to the locally running ledger:
+
+```
+./deploy {contract-name} [destination-r-address]
+```
+
+The **contract name** is mandatory and matches the file name (without extension) in the `./build` folder. 
+The destination r-address is optional, if not specified the contract will deploy to `ryouhapPYV5KNHmFUKrjNqsjxhnxvQiVt`.
+
+To deploy `mycontract.ts` or `mycontract.js` from the `./build` folder:
+
+```
+./deploy mycontract
 ```
 
 # Endpoints

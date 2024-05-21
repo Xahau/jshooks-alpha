@@ -14,12 +14,12 @@ echo
 echo
 
 echo -e "  ${BLUE}Compiling TypeScript files to Javascript...${END}"
-tsfiles=$(ls $(self)/contracts/*.ts|rev|cut -d '.' -f 2-100|rev|xargs -I___ echo "      > ${PURPLE}___.ts${END}\n      < ${GREEN}___-tsc.js${END}")
+tsfiles=$(ls $(self)/contracts/*.ts|rev|cut -d '.' -f 2-100|rev|xargs -I___ echo "      > ${PURPLE}___.ts${END}\n      < ${GREEN}.js${END}")
 numtsfiles=$(echo "$tsfiles"|wc -l|xargs)
 echo -e "   - Found       ${GREEN}${numtsfiles}${END}      .ts file(s)"
 
 if [[ "$numtsfiles" -gt 0 ]]; then
-  ls $(self)/contracts/*.ts|rev|cut -d '.' -f 2-100|rev|xargs -I___ echo "tsc ___.ts --outFile ___-tsc.js"|bash
+  ls $(self)/contracts/*.ts|rev|cut -d '.' -f 2-100|rev|xargs -I___ echo "npm run compile"|bash #  ___.ts --outFile ___-tsc.js
   echo -e "$tsfiles"
 fi
 

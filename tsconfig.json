@@ -8,8 +8,9 @@
     "strict": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
-    "typeRoots": ["./node_modules/@types", "./@types"]
+    "typeRoots": [ "node_modules/@types", "@types" ],
+    "skipLibCheck": true
   },
-  "include": ["contracts/*.ts"],
-  "exclude": ["node_modules", "build"]
+  "include": [ "contracts/*.ts", "@types/*.d.ts" ],
+  "exclude": [ "node_modules", "build" ]
 }

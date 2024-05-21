@@ -25,5 +25,5 @@
     "typescript": "^5.4.5",
     "xrpl-accountlib": "^3.6.1"
   },
-  "types": "@types/*.ts"
+  "types": "@types/global.d.ts"
 }

@@ -52,5 +52,26 @@ To install (or update, or reload, or restart, or ...)
 #### Watch install script in dev (autoreload) mode:
 
 ```
-nodemon -w ./ --ext '*' --ignore ./conf --ignore ./bin --ignore ./repos --exec bash install
+./run-dev
+```
+
+## Alternatives
+
+#### Hooks JS container only
+
+Easiest way: use `xrpl-netgen` to run a specific version of the JS Hooks binary.
+
+```
+pip3bin=$(echo "$(echo $(which pipx 2>&1); echo $(which pip3 2>&1))"|grep /|head -n 1)
+$pip3bin install xrpld-netgen
+
+# Run, binary 2024.5.20-dev+jshooks as per https://build.xahau.tech
+xrpld-netgen up:standalone --protocol xahau --version 2024.5.20-dev+jshooks --build_type binary --server https://build.xahau.tech --network_id 65535
+# xrpld-netgen down:standalone --version 2024.5.20-dev+jshooks
+
+# Advance ledger
+curl -X POST --data '{"method":"ledger_accept"}' localhost:5007
+
+# Trace
+docker logs --tail 100 -f xahau 2>&1 | grep -E 'HookTrace|HookError'
 ```

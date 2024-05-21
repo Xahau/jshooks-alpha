@@ -37,10 +37,22 @@ To install (or update, or reload, or restart, or ...)
 
 ##  Use
 
-- **Watch Xahaud trace logs live, filtered @ Hook data:**: `./logs`  
-(Tip: just keep this running in a separate terminal)
-- **Close a ledger, commit transactions, generate logging (`./logs`):**: `./advance`  
-If you want to automate this, you can POST: `curl -X POST --data '{"method":"ledger_accept"}' localhost:9005`
+### **Watch Xahaud trace logs live, filtered @ Hook info**
+```
+./logs
+```
+Tip: just keep this running in a separate terminal
+
+### **Close a ledger, commit transactions**
+```
+./advance
+```
+Tip: If you want to automate this, you can POST:  
+  ```
+    curl \
+      -X POST --data '{"method":"ledger_accept"}' \
+      localhost:9005
+```
 
 # Endpoints
 

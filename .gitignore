@@ -3,3 +3,6 @@
 /bin/**
 /conf/xahaud.conf
 /node_modules/**
+/contracts/**.js
+/contracts/**.ts
+/build/**.bc

@@ -1,0 +1,27 @@
+{
+  "name": "jshooks-alpha-toolkit",
+  "version": "1.0.0",
+  "description": "Xahau(d) - JS Hooks ALPHA TOOLKIT",
+  "scripts": {
+    "compile": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Xahau/jshooks-alpha.git"
+  },
+  "keywords": [
+    "xahau",
+    "hooks",
+    "jshooks"
+  ],
+  "author": "Wietse Wind <w@xrpl-labs.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Xahau/jshooks-alpha/issues"
+  },
+  "homepage": "https://github.com/Xahau/jshooks-alpha#readme",
+  "devDependencies": {
+    "typescript": "^5.4.5"
+  },
+  "types": "@types/*.ts"
+}

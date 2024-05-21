@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "lib": ["es6"],
+    "declaration": false,
+    "outDir": "./contracts",
+    "strict": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "typeRoots": ["./node_modules/@types", "./@types"]
+  },
+  "include": ["contracts/*.ts"],
+  "exclude": ["node_modules", "build"]
+}

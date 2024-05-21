@@ -2,3 +2,4 @@
 /repos/**
 /bin/**
 /conf/xahaud.conf
+/node_modules/**

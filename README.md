@@ -37,13 +37,13 @@ To install (or update, or reload, or restart, or ...)
 
 ##  Use
 
-### **Watch Xahaud trace logs live, filtered @ Hook info**
+### Watch Xahaud trace logs live, filtered @ Hook info
 ```
 ./logs
 ```
 Tip: just keep this running in a separate terminal
 
-### **Close a ledger, commit transactions**
+### Close a ledger, commit transactions
 ```
 ./advance
 ```

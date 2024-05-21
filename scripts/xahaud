@@ -5,13 +5,6 @@ self() {
   echo $DIR
 }
 
-RED="\033[31m"
-GREEN="\033[32m"
-BLUE="\033[34m"
-PURPLE="\033[35m"
-CYAN="\033[36m"
-END="\033[0m"
-
 echo -e "${CYAN}Patching config files"
 echo "Mainnet enabled features:"
 

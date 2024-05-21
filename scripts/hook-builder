@@ -28,6 +28,7 @@ else
     docker run -d --rm \
         --name jshooks-build  \
         -v $(self)/../contracts:/contracts \
+        -v $(self)/../build:/build \
         -v $(self)/../repos/quickjslite:/quickjslite \
         alpine \
         sh -c 'apk add g++ make build-base git && cd /quickjslite && make 2>&1 && echo "DONE BUILDING"; tail -f /dev/null'

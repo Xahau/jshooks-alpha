@@ -1,11 +1,6 @@
 #!/usr/bin/env bash
 
-export RED="\033[31m"
-export GREEN="\033[32m"
-export BLUE="\033[34m"
-export PURPLE="\033[35m"
-export CYAN="\033[36m"
-export END="\033[0m"
+eval $(./scripts/colors | sed 's/\(.*\)=\(.*\)/\1="\2"/g')
 
 clear
 

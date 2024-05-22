@@ -1,6 +1,7 @@
 /**
  * Sample just doing some logging...
  */
+import { someLogging } from './fns'
 
 const Hook: Hook = () => {
   const obj = {
@@ -15,6 +16,8 @@ const Hook: Hook = () => {
     0x14, 0x90, 0x8F, 0x6E, 0x8E, 0x6D, 0x76, 0xAE,
     0xFB, 0x55, 0x80, 0x0C,
   ]
+
+  someLogging()
 
   let raddr
   trace("R-addr", raddr = util_raddr(accid), false)

@@ -28,7 +28,7 @@
     "node-fetch": "^3.3.2",
     "typescript": "^5.4.5",
     "xrpl-accountlib": "^3.6.1",
-    "@jshooks-eslint-rules/eslint-plugin": "file:@jshooks-eslint-rules"
+    "@jshooks-eslint-rules/eslint-plugin": "file:@jshooks-eslint-rules/eslint-plugin"
   },
   "types": "@types/global.d.ts"
 }

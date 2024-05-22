@@ -13,6 +13,15 @@ echo
 ./scripts/banner
 echo
 
+echo -e "  ${BLUE}Linting...${END}"
+
+npm run lint
+
+if [[ "$?" -gt "0" ]]; then
+  # Linting error
+  exit 1
+fi
+
 echo -e "  ${BLUE}Compiling TypeScript files to Javascript...${END}"
 tsfiles=$(ls $(self)/contracts/*.ts|rev|cut -d '.' -f 2-100|rev|xargs -I___ echo "      > ${PURPLE}___.ts${END}\n      < ${GREEN}.js${END}")
 numtsfiles=$(echo "$tsfiles"|wc -l|xargs)

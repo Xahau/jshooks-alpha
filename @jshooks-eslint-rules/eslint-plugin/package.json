@@ -3,8 +3,5 @@
   "version": "0.0.0",
   "description": "stuff",
   "main": "./lib/index.js",
-  "exports": "./lib/index.js",
-  "devDependencies": {
-    "requireindex": "^1.2.0"
-  }
+  "exports": "./lib/index.js"
 }

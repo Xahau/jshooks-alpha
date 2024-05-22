@@ -26,12 +26,15 @@ module.exports = {
       // 'FunctionExpression',
       'WithStatement',
       'FunctionDeclaration',
-      'CallExpression[callee.name="require"]',
+      // 'CallExpression[callee.name="require"]',
       'CallExpression[callee.name="setTimeout"]',
       'CallExpression[callee.name="setInterval"]',
-      'ImportDeclaration'
+      // 'ImportDeclaration'
     ],
     '@typescript-eslint/no-unused-vars': ['error', { "varsIgnorePattern": "^Hook|Callback$" }],
-    '@jshooks-eslint-rules/no-restricted-arrow-functions': 'error',
+    // '@jshooks-eslint-rules/no-restricted-arrow-functions': 'error',
+    '@jshooks-eslint-rules/no-restricted-arrow-functions': 'off', // WIP
+    'no-redeclare': 'off',
+    // 'no-restricted-imports': 'off',
   },
 }

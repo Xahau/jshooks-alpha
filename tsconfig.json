@@ -4,6 +4,7 @@
     "module": "commonjs",
     "lib": ["es6"],
     "declaration": false,
+    "moduleDetection": "force",
     "outDir": "./contracts",
     "strict": true,
     "esModuleInterop": true,

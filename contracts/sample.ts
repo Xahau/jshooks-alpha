@@ -45,4 +45,4 @@ const Callback: Callback = () => {
 export {
   Hook,
   Callback,
-};
+}

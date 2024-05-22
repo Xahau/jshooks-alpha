@@ -23,15 +23,17 @@ if [[ "$?" -gt "0" ]]; then
 fi
 
 echo -e "  ${BLUE}Compiling TypeScript files to Javascript...${END}"
-tsfiles=$(ls $(self)/contracts/*.ts|rev|cut -d '.' -f 2-100|rev|xargs -I___ echo "      > ${PURPLE}___.ts${END}\n      < ${GREEN}.js${END}")
+tsfiles=$(ls $(self)/contracts/*.ts|rev|cut -d '.' -f 2-100|rev|xargs -I___ echo "      > ${PURPLE}___.ts${END}\n      < ${GREEN}___.js${END}")
 numtsfiles=$(echo "$tsfiles"|wc -l|xargs)
 echo -e "   - Found       ${GREEN}${numtsfiles}${END}      .ts file(s)"
 
 if [[ "$numtsfiles" -gt 0 ]]; then
-  ls $(self)/contracts/*.ts|rev|cut -d '.' -f 2-100|rev|xargs -I___ echo "npm run compile"|bash #  ___.ts --outFile ___-tsc.js
+  # --external:./contracts/GlobalJSHooksAPI.ts
+  ls $(self)/contracts/*.ts|rev|cut -d '.' -f 2-100|rev|xargs -I___ echo "npm run compile -- ___.ts --tree-shaking=true --bundle --outfile=___.js --format=esm"|bash #  ___.ts --outFile ___-tsc.js
   echo -e "$tsfiles"
 fi
 
+# exit 0
 echo
 
 # docker exec jshooks-build /quickjslite/qjsc /contracts/bla-tsc.js

@@ -30,8 +30,13 @@ PROGRAM=xahaud
 echo -e "${END}Fetching versions of $PROGRAM..."
 filenames=$(curl --silent "${URL}" | grep -Eo '>[^<]+<' | sed -e 's/^>//' -e 's/<$//' | grep -E '^\S+\+[0-9a-z]{2,}$' | grep -E $RELEASE_TYPE|sort -Vr)
 latestversion=$(echo "$filenames"|head -n 1)
-echo -e "${GREEN}Found latest version: ${BLUE}$latestversion, downloading..."
-curl --silent -o $(self)"/../bin/$latestversion" "${URL}/${latestversion}"
+echo -e "${GREEN}Found latest version: ${BLUE}$latestversion"
+if [[ -f $(self)/../bin/$latestversion ]]; then
+    echo "Binary already present: bin/$latestversion exists"
+else
+    echo "Needs latest binary version, downloading..."
+    curl -o "$(self)/../bin/$latestversion" "${URL}/${latestversion}"
+fi
 echo -e ${CYAN}
 
 echo -e "${END}Creating container${CYAN}"

@@ -5,19 +5,37 @@ errors=0
 which_git=$(which git)
 [[ "$which_git" = "" ]] && echo -e "❌ git not installed" && errors=1 || echo "✅ git installed"
 
-which_docker=$(which docker)
-[[ "$which_docker" = "" ]] && echo -e "❌ docker not installed" && errors=1 || echo "✅ docker installed"
-
+# Required for linting
 has_node_npm=$(which npm 2>&1|grep / |wc -l)
 [[ "$has_node_npm" -lt 1 ]] && echo -e "❌ node/npm not installed" && errors=1 || echo "✅ node/npm installed"
 
-which_jq=$(which docker)
+which_docker=$(which docker)
+if [[ "$which_docker" = "" ]]; then
+    echo -e "❌ docker not installed" && errors=1
+else
+    echo "✅ docker installed"
+
+    has_internet=$(curl --connect-timeout 2 --silent https://build.xahau.tech/ | grep Index| wc -l| xargs)
+    if [[ "$has_internet" -lt 2 ]]; then
+        echo -e "❌ cannot reach xahau build server" && errors=1
+    else
+        echo "✅ can reach xahau build server"
+
+        has_existing_containers=$(docker ps|grep jshooks-build|wc -l|xargs)
+
+        if [[ "$has_existing_containers" -gt "0" ]]; then
+            echo "✅ can run linux/amd64 in docker (assumed)"
+        else
+            can_run_docker=$(docker run --platform linux/amd64 --rm ubuntur uname -a 2>&1|grep x86_64|wc -l|xargs)
+            [[ "$can_run_docker" -gt 0 ]] && echo -e "❌ can run linux/amd64 in docker" && errors=1 || echo "✅ can run linux/amd64 in docker"
+        fi
+    fi
+fi
+
+which_jq=$(which jq)
 [[ "$which_jq" = "" ]] && echo -e "❌ jq installed" && errors=1 || echo "✅ jq installed"
 
-has_internet=$(curl --connect-timeout 2 --silent https://build.xahau.tech/ | grep Index| wc -l| xargs)
-[[ "$has_internet" -lt 2 ]] && echo -e "❌ cannot reach xahau build server" && errors=1 || echo "✅ can reach xahau build server"
-
-can_run_docker=$(docker run --platform linux/amd64 --rm ubuntur uname -a 2>&1|grep x86_64|wc -l|xargs)
-[[ "$can_run_docker" -gt 0 ]] && echo -e "❌ can run linux/amd64 in docker" && errors=1 || echo "✅ can run linux/amd64 in docker"
+# which_wasmtime=$(which wasmtime)
+# [[ "$which_wasmtime" = "" ]] && echo -e '❌ wasmtime installed, to install: `curl https://wasmtime.dev/install.sh -sSf | bash' && errors=1 || echo "✅ wasmtime installed"
 
 exit $errors

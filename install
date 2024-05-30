@@ -22,7 +22,7 @@ echo "    - Transaction Generation Helper script"
 echo
 echo -e "${BLUE}Checking dependencies:${END}"
 
-./scripts/install-check-prerequisites ; [[ $? -gt 0 ]] && echo -e "${RED}Dependency ERROR${END}" && exit 1 || echo -e "${GREEN}Dependencies OK${END}"
+./scripts/install-check-prerequisites ; [[ $? -gt 0 ]] && echo -e "${RED}Dependency (reqiurement) ERROR - Please fix the dependency error and try again.${END}" && exit 1 || echo -e "${GREEN}Dependencies OK${END}"
 
 echo
 echo -e "${BLUE}Building/running Docker Image:${END}"

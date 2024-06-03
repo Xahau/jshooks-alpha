@@ -13,7 +13,9 @@
 
 ## Todo:
 
-https://github.com/Xahau/jshooks-alpha/issues?q=is%3Aopen+is%3Aissue+label%3Atodo
+- https://github.com/Xahau/jshooks-alpha/issues?q=is%3Aopen+is%3Aissue+label%3Atodo
+- Document example: https://zoq4jb3.dlvr.cloud/index.html
+- Document `.wasm` CDN locations: https://wasm.xahau.tech (qjsc.wasm, esbuild.wasm)
 
 # Commands:
 

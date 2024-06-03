@@ -1,7 +1,7 @@
 import { utf8ToHex, uint8ArrayToString, hexToUtf8 } from './index'
 
-const encode = (stringHexOrUtf8: string) => {
-  if (stringHexOrUtf8.match(/^[a-f0-9]+$/) && stringHexOrUtf8.length % 2 === 0) {
+const encode = (stringHexOrUtf8: string | Uint8Array) => {
+  if (stringHexOrUtf8 instanceof Uint8Array || stringHexOrUtf8.match(/^[a-f0-9]+$/) && stringHexOrUtf8.length % 2 === 0) {
     // Already hex
     return stringHexOrUtf8
   } else {
@@ -12,11 +12,11 @@ const encode = (stringHexOrUtf8: string) => {
 /**
 * Store key/value pair, returns true if stored, false on error storing the data
 *
-* @param {string}                                                       key   - string containing a short description of what is being logged
+* @param {string|Uint8Array}                                            key   - string containing a short description of what is being logged
 * @param {string|number|Uint8Array|Transaction|null|undefined|AnyJSON}  value - data being logged
 * @returns {boolean}
 */
-export const setItem = (key: string, value: string | number | boolean | AnyJson): boolean => {
+export const setItem = (key: string | Uint8Array, value: string | number | boolean | AnyJson | Uint8Array): boolean => {
   // TODO: check key and value length
   if (typeof key === 'string' && (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean' || typeof value === 'object')) {
     if (typeof value === 'string' && value.match(/^[a-f0-9]+$/) && value.length % 2 === 0) {
@@ -34,7 +34,7 @@ export const setItem = (key: string, value: string | number | boolean | AnyJson)
 /**
 * Retrieve key/value pair by key, returns null if not found.
 *
-* @param {string}                                                       key   - string containing a short description of what is to be retrieved
+* @param {string|Uint8Array}                                               key   - string containing a short description of what is to be retrieved
 * @returns {string|number|Uint8Array|Transaction|null|undefined|AnyJSON}
 */
 export const getItem = (key: string) => {
@@ -61,7 +61,7 @@ export const getItem = (key: string) => {
 /**
 * Remove key/value pair by key
 *
-* @param {string}  key   - string containing a short description of what is to be retrieved
+* @param {string|Uint8Array}  key   - string containing a short description of what is to be retrieved
 * @returns {undefined}
 */
 export const removeItem = (key: string) => {

@@ -2,10 +2,23 @@
   "name": "@xahau/hooks",
   "version": "1.0.0",
   "description": "Xahau TS/JS Hooks Lib.",
-  "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prepublish": "npm run clean && npm run test && npm run build",
+    "clean": "rm -rf dist",
+    "build": "tsc && mkdir",
+    "browserify": "browserify -r ./dist/index.js:@xahau/hooks -o dist/browser.js && npm run minify",
+    "minify": "cat dist/browser.js | terser --compress --mangle > dist/browser.min.js",
+    "publish": "npm publish --access public"
   },
+  "files": [
+    "dist/**/*.js",
+    "dist/**/*.js.map",
+    "dist/**/*.d.ts",
+    "src/types/*.d.ts",
+    "src/**/*.ts"
+  ],
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "keywords": [
     "xahau",
     "hooks",
@@ -17,5 +30,10 @@
   "license": "MIT",
   "dependencies": {
     "@transia/xahau-models": "^2.7.3-alpha.27"
+  },
+  "devDependencies": {
+    "browserify": "^17.0.0",
+    "terser": "^5.31.0",
+    "typescript": "^5.4.5"
   }
 }

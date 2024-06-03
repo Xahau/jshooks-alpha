@@ -1,7 +1,7 @@
 import type { Transaction } from '@transia/xahau-models'
 
-import type { log } from '../src/console'
-import type { getItem, setItem, removeItem, foreignStorage } from '../src/localStorage'
+import type { log } from '../console'
+import type { getItem, setItem, removeItem, foreignStorage } from '../localStorage'
 import type { Transaction } from '@transia/xahau-models'
 
 declare global {

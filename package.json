@@ -31,7 +31,7 @@
     "typescript": "^5.4.5",
     "xrpl-accountlib": "^3.6.1"
   },
-  "types": "contracts/@xahau/hooks/@types/global.d.ts",
+  "types": "contracts/@xahau/hooks/src/types/global.d.ts",
   "dependencies": {
     "esbuild": "^0.21.3"
   }

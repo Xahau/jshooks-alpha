@@ -9,9 +9,9 @@
     "strict": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
-    "typeRoots": [ "node_modules/@types", "contracts/@xahau/hooks/@types" ],
+    "typeRoots": [ "node_modules/@types", "contracts/@xahau/hooks/src/types" ],
     "skipLibCheck": true
   },
-  "include": [ "contracts/*.ts", "contracts/@xahau/hooks/@types/*.d.ts" ],
+  "include": [ "contracts/*.ts", "contracts/@xahau/hooks/src/types/*.d.ts" ],
   "exclude": [ "node_modules", "build" ]
 }

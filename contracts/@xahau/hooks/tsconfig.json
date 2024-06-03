@@ -3,15 +3,15 @@
     "target": "es6",
     "module": "commonjs",
     "lib": ["es2017"],
-    "declaration": false,
+    "declaration": true,
     "moduleDetection": "force",
     "outDir": "./dist",
     "strict": true,
     "esModuleInterop": true,
+    "typeRoots": [ "node_modules/@types", "src/types" ],
     "resolveJsonModule": true,
-    "typeRoots": [ "node_modules/@types", "@types" ],
     "skipLibCheck": true
   },
-  "include": [ "src/*.ts", "src/**.ts", "src/*/**.ts", "@types/*.d.ts" ],
+  "include": [ "src/*.ts", "src/**.ts", "src/*/**.ts", "src/types/*.d.ts" ],
   "exclude": [ "node_modules", "dist" ]
 }

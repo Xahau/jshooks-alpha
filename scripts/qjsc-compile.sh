@@ -7,7 +7,17 @@ input_file="$1"
 output_file="/build/${input_file%.js}.bc"
 
 # Strip imports, esmodule, etc.
-cat "/contracts/$input_file" |grep -v -E 'Object.defineProperty.+exports.+__esModule'|grep -v -E '^exports\..+=.+'|sed 's/^export.*{/const _skip_export = {/g' > temp.js && mv temp.js "/contracts/$input_file"
+cat "/contracts/$input_file" \
+    | grep -v -E 'Object.defineProperty.+exports.+__esModule' \
+    | grep -v -E '^exports\..+=.+' \
+    | perl -0777pe 's/export.*?{[^}]+}/\/\/ Exports were here/sg' \
+    | sed 's/var Hook =/var __Hook =/g' \
+    | sed 's/var Callback =/var __Callback =/g' \
+    > temp.js \
+    && echo 'var Hook = (reserved) => __Hook(otxn_json(), reserved)' >> temp.js \
+    && echo 'var Callback = (code) => __Callback(otxn_json(), code)' >> temp.js \
+    && echo '' >> temp.js \
+    && mv temp.js "/contracts/$input_file"
 
 # Generate the hex output and convert it to bytes
 hex_output=$(/quickjslite/qjsc -c -o /dev/stdout "/contracts/$input_file" | tr -d '\n' | grep -Eo '\{[^}]+\}' | grep -Eo '0x[a-fA-F0-9]+' | sed -e 's/0x//g' | tr -d '\n')

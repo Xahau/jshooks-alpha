@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Xahau(d) - JS Hooks ALPHA TOOLKIT",
   "scripts": {
-    "compile": "esbuild",
+    "compile": "esbuild --inject:./contracts/@xahau/hooks/src/index.ts --platform=node --tree-shaking=true --bundle --format=esm",
     "lint": "eslint contracts/ --ext .ts"
   },
   "repository": {
@@ -23,6 +23,7 @@
   "homepage": "https://github.com/Xahau/jshooks-alpha#readme",
   "devDependencies": {
     "@jshooks-eslint-rules/eslint-plugin": "file:@jshooks-eslint-rules/eslint-plugin",
+    "@xahau/hooks": "file:contracts/@xahau/hooks",
     "@typescript-eslint/eslint-plugin": "^7.10.0",
     "@typescript-eslint/parser": "^7.10.0",
     "eslint": "^8.57.0",
@@ -30,7 +31,7 @@
     "typescript": "^5.4.5",
     "xrpl-accountlib": "^3.6.1"
   },
-  "types": "@types/global.d.ts",
+  "types": "contracts/@xahau/hooks/@types/global.d.ts",
   "dependencies": {
     "esbuild": "^0.21.3"
   }

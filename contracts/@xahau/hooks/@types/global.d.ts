@@ -1,6 +1,68 @@
+import type { Transaction } from '@transia/xahau-models'
+
+import type { log } from '../src/console'
+import type { getItem, setItem, removeItem, foreignStorage } from '../src/localStorage'
+import type { Transaction } from '@transia/xahau-models'
+
 declare global {
 
-/********************************************************************************************************************* */
+  /********************************************************************************************************************* */
+  
+  export type AnyJson = {
+    [key: string]: AnyJson | boolean | string | number | string[] | boolean[] | number[] | AnyJson[]
+  }
+
+  const console = {
+    /**
+    * Send logging to the Xahaud Trace log
+    *
+    * @param {string}                                                       key   - string containing a short description of what is being logged
+    * @param {string|number|Uint8Array|Transaction|null|undefined|AnyJson}  value - data being logged
+    * @returns {undefined}
+    */
+   log: log
+  }  
+
+  const localStorage = {
+    /**
+    * Store data in Hook State
+    *
+    * @param {string}        key   - key of the data stored (for retrieval)
+    * @param {string}        value - data being stored
+    * @returns {undefined}
+    */
+   setItem: setItem,
+    /**
+    * Retrieve data in Hook State
+    *
+    * @param {string}        key   - key of the data stored
+    * @returns {string|null}
+    */
+    getItem: getItem,
+    /**
+    * Remove data from Hook State
+    *
+    * @param {string}        key   - key of the data stored (to remove)
+    * @returns {undefined}
+    */
+    removeItem: removeItem,
+  }  
+
+  /**
+   * Write logging information to the trace log of nodes. Used for debugging purposes.
+   *
+   * @param {string|null}                             message - The 'logging key', message to output before the buffer (can be null)
+   * @param {string|number|Uint8Array|Transaction}    data    - The data to log
+   * @param {boolean}                                 [hex]   - Should it log formatted in HEX?
+   * @returns {number}                                        - int64_t, value is 0 if successful, If negative, an error: OUT_OF_BOUNDS
+   */
+  const trace: (
+    message: string | null,
+    data: string | number | Uint8Array | Transaction | boolean | AnyJson,
+    hex?: boolean,
+  ) => number
+
+  /********************************************************************************************************************* */
 
   /**
    * Definition of a Hook (smart contract) written in TS/JS.
@@ -9,7 +71,7 @@ declare global {
    * @returns {number}        - int64_t, An arbitrary return code you wish to return from your hook. This will
    *                            be present in the metadata of the originating transaction.
    */
-  export type Hook = (reserved?: number) => number
+  type Hook = (tx: Transaction, reserved?: number) => number
 
   /**
    * Definition of a Hook Callback - user defined function called in order to inform your hook about the
@@ -24,23 +86,7 @@ declare global {
    * @returns {number}              - int64_t, An arbitrary return code you wish to return from your hook.
    *                                  This will be present in the metadata of the originating transaction.
    */
-  export type Callback = (emittedTxError?: number) => number
-
-/********************************************************************************************************************* */
-
-  /**
-   * Write logging information to the trace log of nodes. Used for debugging purposes.
-   *
-   * @param {string | null}  message - The 'logging key', message to output before the buffer (can be null)
-   * @param {any}            data    - The data to log
-   * @param {boolean}        [hex]   - Should it log formatted in HEX?
-   * @returns {number}               - int64_t, value is 0 if successful, If negative, an error: OUT_OF_BOUNDS
-   */
-  const trace: (
-    message: string | null,
-    data: any,
-    hex?: boolean,  
-  ) => number
+  type Callback = (tx: Transaction, emittedTxError?: number) => number
 
 /********************************************************************************************************************* */
 
@@ -88,16 +134,44 @@ declare global {
 
 /********************************************************************************************************************* */
 
+  /**
+   * Configure the amount of transactions this Hook is allowed to emit.
+   *
+   * @param {number} txCount - The max. amount of transactions this Hook is allowed to emit in its lifecycle
+   * @returns {undefined}
+   */
+  const etxn_reserve = (txCount: number) => undefined
+
+  /**
+  * Return the transaction that triggered this Hook execution as Object.
+  *
+  * @returns {object}
+  */
+  const otxn_json = () => Transaction // Triggering transaction
+
+
   // TODO
+  const prepare = (txJson: Transaction) => string
+  const emit = (txJson: string) => Uint8Array
+  // const util_verify = (signedData: string, signature: string, pubkey: string) => number
 
-  const util_raddr = (arg: any) => any
-  const util_accid = (arg: any) => any
-  const util_sha512h = (arg: any) => any
-  const hook_account = (arg?: any) => any
-  const state = (arg: any) => any
-  const hook_hash = (arg: any) => any
-  const state_set = (arg: any, arg: any) => any
+  // const sto_to_json = (txblob: string) => object // tx
+  // const sto_validate = (txblob: string) => number // tx
+  // const sto_from_json = (tx: object) => string // tx
+  
+  // const ledger_keylet = (arg: any) => any
+  
+  // const util_raddr = (arg: any) => any
+  // const util_accid = (arg: any) => any
+  // const util_sha512h = (arg: any) => any
+  // const hook_account = (arg?: any) => any
+  // const hook_hash = (arg: any) => any
+  // const otxn_param = (arg: any, arg: any) => any
+  // const otxn_type = (arg: any, arg: any) => any
 
+  const state = (key: string | Uint8Array) => string | number | undefined | null
+  const state_set = (value: string | Uint8Array | undefined, key: string | Uint8Array) => number
+  
 /********************************************************************************************************************* */
 
 }

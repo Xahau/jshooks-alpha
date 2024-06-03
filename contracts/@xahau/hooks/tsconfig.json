@@ -5,13 +5,13 @@
     "lib": ["es2017"],
     "declaration": false,
     "moduleDetection": "force",
-    "outDir": "./contracts",
+    "outDir": "./dist",
     "strict": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
-    "typeRoots": [ "node_modules/@types", "contracts/@xahau/hooks/@types" ],
+    "typeRoots": [ "node_modules/@types", "@types" ],
     "skipLibCheck": true
   },
-  "include": [ "contracts/*.ts", "contracts/@xahau/hooks/@types/*.d.ts" ],
-  "exclude": [ "node_modules", "build" ]
+  "include": [ "src/*.ts", "src/**.ts", "src/*/**.ts", "@types/*.d.ts" ],
+  "exclude": [ "node_modules", "dist" ]
 }

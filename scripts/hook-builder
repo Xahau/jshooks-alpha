@@ -32,7 +32,7 @@ else
         -v $(self)/../scripts/qjsc-compile.sh:/qjsc-compile.sh \
         -v $(self)/../repos/quickjslite:/quickjslite \
         alpine \
-        sh -c 'apk add g++ make build-base git && cd /quickjslite && make 2>&1 && echo "DONE BUILDING"; tail -f /dev/null'
+        sh -c 'apk add perl g++ make build-base git && cd /quickjslite && make 2>&1 && echo "DONE BUILDING"; tail -f /dev/null'
 
     echo -e "${PURPLE}Subscribing to logs${END}"
     docker logs -f jshooks-build | while read line; do

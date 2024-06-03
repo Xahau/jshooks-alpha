@@ -27,10 +27,11 @@ tsfiles=$(ls $(self)/contracts/*.ts|rev|cut -d '.' -f 2-100|rev|xargs -I___ echo
 numtsfiles=$(echo "$tsfiles"|wc -l|xargs)
 echo -e "   - Found       ${GREEN}${numtsfiles}${END}      .ts file(s)"
 
+grepwhat=".*$1.*"
 if [[ "$numtsfiles" -gt 0 ]]; then
-  # --external:./contracts/GlobalJSHooksAPI.ts
-  ls $(self)/contracts/*.ts|rev|cut -d '.' -f 2-100|rev|xargs -I___ echo "npm run compile -- ___.ts --tree-shaking=true --bundle --outfile=___.js --format=esm"|bash #  ___.ts --outFile ___-tsc.js
-  echo -e "$tsfiles"
+  # --external:./contracts/GlobalJSHooksAPI.ts  
+  ls $(self)/contracts/*.ts|grep -i -E "$grepwhat"|rev|cut -d '.' -f 2-100|rev|xargs -I___ echo "npm run compile -- ___.ts --outfile=___.js "|bash #  ___.ts --outFile ___-tsc.js
+  echo -e "$tsfiles"|grep -i -E "$grepwhat"
 fi
 
 # exit 0
@@ -39,7 +40,7 @@ echo
 # docker exec jshooks-build /quickjslite/qjsc /contracts/bla-tsc.js
 
 echo -e "  ${BLUE}Compiling JS files to binary Hook files ${GREEN}(.bc)${BLUE}...${END}"
-jsfiles=$(ls $(self)/contracts/*.js|rev|cut -d '.' -f 2-100|cut -d '/' -f 1|rev|xargs -I___ echo "      > ${PURPLE}$(self)/contracts/___.js${END}")
+jsfiles=$(ls $(self)/contracts/*.js|grep -i -E "$grepwhat"|rev|cut -d '.' -f 2-100|cut -d '/' -f 1|rev|xargs -I___ echo "      > ${PURPLE}$(self)/contracts/___.js${END}")
 numjsfiles=$(echo "$jsfiles"|wc -l|xargs)
 echo -e "   - Found       ${GREEN}${numjsfiles}${END}      .js file(s)"
 if [[ "$numjsfiles" -gt 0 ]]; then
@@ -47,7 +48,7 @@ if [[ "$numjsfiles" -gt 0 ]]; then
   rm -f $(self)/build/*.bc
   rm -f $(self)/build/*.bc.raw
   echo -e "   - Compiled:${GREEN}"
-  ls $(self)/contracts/*.js|rev|cut -d '.' -f 2-100|cut -d '/' -f 1|rev|xargs -I___ echo "docker exec jshooks-build sh /qjsc-compile.sh ___.js"|bash
+  ls $(self)/contracts/*.js|grep -i -E "$grepwhat"|rev|cut -d '.' -f 2-100|cut -d '/' -f 1|rev|xargs -I___ echo "docker exec jshooks-build sh /qjsc-compile.sh ___.js"|bash
   echo -e "${END}"
 fi
 

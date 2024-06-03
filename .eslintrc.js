@@ -14,18 +14,26 @@ module.exports = {
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended'
   ],
+  overrides: [
+    {
+      files: ["*.d.ts"],
+      rules: {
+        "@typescript-eslint/no-unused-vars": "off",
+      },
+    },
+  ],
   rules: {
     'no-restricted-globals': ['error',
       'setTimeout',
       'setInterval',
       'eval',
       'Promise',
-      'Function',
+      // 'Function',
     ],
     'no-restricted-syntax': ['error',
       // 'FunctionExpression',
       'WithStatement',
-      'FunctionDeclaration',
+      // 'FunctionDeclaration',
       // 'CallExpression[callee.name="require"]',
       'CallExpression[callee.name="setTimeout"]',
       'CallExpression[callee.name="setInterval"]',

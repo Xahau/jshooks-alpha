@@ -8,4 +8,4 @@ node_modules
 /contracts/**.ts
 /build/**.bc
 /build/**.bc.raw
-
+/contracts/@xahau/hooks/dist

@@ -1,5 +1,3 @@
-import type { Transaction } from '@transia/xahau-models'
-
 import type { log } from '../console'
 import type { getItem, setItem, removeItem, foreignStorage } from '../localStorage'
 import type { Transaction } from '@transia/xahau-models'
@@ -27,22 +25,22 @@ declare global {
     /**
     * Store data in Hook State
     *
-    * @param {string}        key   - key of the data stored (for retrieval)
-    * @param {string}        value - data being stored
+    * @param {string|Uint8Array}                        key   - key of the data stored (for retrieval)
+    * @param {string|number|Uint8Array|boolean|AnyJson} value - data being stored
     * @returns {undefined}
     */
    setItem: setItem,
     /**
     * Retrieve data in Hook State
     *
-    * @param {string}        key   - key of the data stored
+    * @param {string|Uint8Array}   key   - key of the data stored
     * @returns {string|null}
     */
     getItem: getItem,
     /**
     * Remove data from Hook State
     *
-    * @param {string}        key   - key of the data stored (to remove)
+    * @param {string|Uint8Array}   key   - key of the data stored (to remove)
     * @returns {undefined}
     */
     removeItem: removeItem,

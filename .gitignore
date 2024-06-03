@@ -9,3 +9,4 @@ node_modules
 /build/**.bc
 /build/**.bc.raw
 /contracts/@xahau/hooks/dist
+/contracts/@xahau/hooks/dist/.gitkeep

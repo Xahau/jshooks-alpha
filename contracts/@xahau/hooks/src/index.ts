@@ -5,6 +5,7 @@
 //       /_/\_\__,_|_| |_|\__,_|\__,_|   #    ▀▀▀• ▀▀▀▀     ▀▀▀ · ▀█▄▀▪ ▀█▄▀▪·▀  ▀ ▀▀▀▀                
 //       
 
+import '../src/types/global'
 import './console'
 import './localStorage'
 

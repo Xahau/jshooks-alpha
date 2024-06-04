@@ -1,13 +1,13 @@
 import type { Transaction } from '@transia/xahau-models'
+import type { AnyJson } from './index'
 
 /**
 * Send logging to the Xahaud Trace log
 *
-* @param {string}                                                       key   - string containing a short description of what is being logged
-* @param {string|number|Uint8Array|Transaction|null|undefined|AnyJson}  value - data being logged
-* @returns {undefined}
+* @param key   string containing a short description of what is being logged
+* @param value data being logged
 */
-export const log = (key: string, value: string | number | Uint8Array | Transaction | null | undefined | boolean | AnyJson) => {
+export const log = (key: string, value: string | number | Uint8Array | Transaction | null | undefined | boolean | AnyJson | string[] | boolean[] | number[] | AnyJson[]) => {
   // If Uint8 array: always force HEX
   const asHex = Array.isArray(value) && value.filter(a => typeof a !== 'number' || a < 0 || a > 255).length === 0
   if (typeof value === 'boolean') return trace(key || '', value ? 'Bool: true' : 'Bool: false', false)

@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "es6",
-    "module": "commonjs",
+    "module": "ES2020",
     "lib": ["es2017"],
     "declaration": true,
     "moduleDetection": "force",
@@ -10,6 +10,7 @@
     "esModuleInterop": true,
     "typeRoots": [ "node_modules/@types", "src/types" ],
     "resolveJsonModule": true,
+    "moduleResolution": "Bundler",
     "skipLibCheck": true
   },
   "include": [ "src/*.ts", "src/**.ts", "src/*/**.ts", "src/types/*.d.ts" ],

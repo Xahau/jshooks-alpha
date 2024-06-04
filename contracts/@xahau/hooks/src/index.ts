@@ -6,32 +6,50 @@
 //       
 
 import '../src/types/global'
+import type { AnyJson } from '../src/types/global'
 import './console'
-import './localStorage'
+
+export { log } from './console'
+export { getState, setState, removeState } from './state'
 
 import type { Transaction } from '@transia/xahau-models'
-
-// cache
-let $otxn_json: Transaction;
+export type { AnyJson, Transaction }
 
 /**
 * Configure the max. Emitted transactions this Hook is allowed to send in one execution
 *
-* @param {number} maxEmittedTransactions - Max. amount of transactions this Hook is allowed to emit.
-* @returns {undefined}
+* @param maxEmittedTransactions Max. amount of transactions this Hook is allowed to emit.
 */
 export const enableEmit = (maxEmittedTransactions = 1) => {
-  etxn_reserve(maxEmittedTransactions)
+  return etxn_reserve(maxEmittedTransactions)
 }
 
 /**
 * Return the transaction that triggered this Hook execution as Object.
-*
-* @returns {object}
 */
 export const getTriggerTx = (): Transaction => {
-  if (!$otxn_json) $otxn_json = otxn_json()
-  return $otxn_json
+  return otxn_json()
+}
+
+/**
+ * Prepare a JSON transaction for being Emitted
+ *
+ * @param txJson The transaction JSON, must be a complete transaction except for Account (always the Hook account)
+ */
+export const prepareEmit = (txJson: Transaction | Omit<Transaction, 'Account'>) => {
+  return prepare(txJson)
+}
+
+/**
+ * Emit a transaction, returns string with Transaction Hash (pending consensus & ledger inclusion) or false on error
+ *
+ * @param txJson The TX JSON to emit
+ */
+export const doEmit = (txJson: Transaction) => {
+  const emitResult = emit(txJson)
+  return typeof emitResult === 'number'
+    ? false
+    : uint8ArrayToString(emitResult).toUpperCase()
 }
 
 /********************************************************************************************************************* */
@@ -39,8 +57,7 @@ export const getTriggerTx = (): Transaction => {
 /**
 * Take a uint8 array and turn it into a UTF-8 string
 *
-* @param {Uint8Array} ui8arr - The uint8 array to turn into a string
-* @returns {string}
+* @param ui8arr The uint8 array to turn into a string
 */
 export const uint8ArrayToString = (ui8arr: Uint8Array) => {
   return Array.from(ui8arr)
@@ -51,10 +68,9 @@ export const uint8ArrayToString = (ui8arr: Uint8Array) => {
 /**
 * Compute a Slot field ID as per slot_ fns, to retrieve a specific slot field from a slotted object
 *
-* @param {number} serializedType - The serialized type of the field value, can be retrieved from server_definitions
-* @param {number} fieldNumber - The field nubmer in the object, can be retrieved from server_definitions (nth)
-* @param {boolean} [asHex] - The uint8 array to turn into a string
-* @returns {number | string}
+* @param serializedType The serialized type of the field value, can be retrieved from server_definitions
+* @param fieldNumber    The field nubmer in the object, can be retrieved from server_definitions (nth)
+* @param asHex          (Optional) The uint8 array to turn into a string
 */
 export const computeSlotFieldId = (serializedType: number, fieldNumber: number, asHex = false) => {
   const shiftedType = serializedType << 16
@@ -68,8 +84,7 @@ export const computeSlotFieldId = (serializedType: number, fieldNumber: number, 
 /**
 * Turn an UTF-8 string into a hexadecimal string
 *
-* @param {str} string - UTF-8 formatted string
-* @returns {string}
+* @param string - UTF-8 formatted string
 */
 export const utf8ToHex = (str: string) => {
   let hex = ''
@@ -98,8 +113,7 @@ export const utf8ToHex = (str: string) => {
 /**
 * Turn a HEX encoded string into the decoded UTF-8 string
 *
-* @param {hex} string - HEX formatted string
-* @returns {string}
+* @param HEX formatted string
 */
 export const hexToUtf8 = (hex: string) => {
   let str = '';

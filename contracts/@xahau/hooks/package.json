@@ -1,11 +1,12 @@
 {
   "name": "@xahau/hooks",
-  "version": "1.0.5",
+  "version": "1.0.10",
+  "type": "module",
   "description": "Xahau TS/JS Hooks Lib.",
   "scripts": {
     "prepublish": "npm run clean && npm run build && npm run browserify",
     "clean": "rm -rf dist",
-    "build": "tsc",
+    "build": "npm run clean && tsc",
     "browserify": "browserify -r ./dist/index.js:@xahau/hooks -o dist/browser.js && npm run minify",
     "minify": "cat dist/browser.js | terser --compress --mangle > dist/browser.min.js"
   },

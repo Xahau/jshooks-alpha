@@ -7,7 +7,7 @@
     "prepublish": "npm run clean && npm run build && npm run browserify",
     "clean": "rm -rf dist",
     "build": "npm run clean && tsc",
-    "browserify": "browserify -r ./dist/index.js:@xahau/hooks -o dist/browser.js && npm run minify",
+    "browserify": "browserify -r ./dist/index.js:@xahau/hooks -p esmify -o dist/browser.js && npm run minify",
     "minify": "cat dist/browser.js | terser --compress --mangle > dist/browser.min.js"
   },
   "files": [
@@ -30,10 +30,11 @@
   "author": "Wietse Wind",
   "license": "MIT",
   "dependencies": {
-    "@transia/xahau-models": "^2.7.3-alpha.27"
+    "@transia/xahau-models": "^2.7.3-alpha.28"
   },
   "devDependencies": {
     "browserify": "^17.0.0",
+    "esmify": "^0.1.2",
     "terser": "^5.31.0",
     "typescript": "^5.4.5"
   }

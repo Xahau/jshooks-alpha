@@ -43,6 +43,7 @@ const tx = {
     CreateCode: fs.readFileSync(path.dirname(process.argv[1])+ '/../build/' + process.env.HOOK + '.bc').toString('hex'),
     Flags: process.env.FLAGS,
     HookApiVersion: 1,
+    Fee: "1000000",
     HookNamespace: process.env.NAMESPACE,
     HookOn: process.env.HOOKON,
   }
